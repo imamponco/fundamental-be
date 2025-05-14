@@ -2,32 +2,36 @@ package main
 
 import (
 	"fmt"
-	"log"
 )
 
 type Userdata struct {
-	Point int64
+	LoyaltyPoint int64
 }
 
 func main() {
-	var userDatabase = map[string]string{
-		"john": "secret",
+	var userDatabase = map[string]Userdata{
+		"john": {
+			LoyaltyPoint: 100,
+		},
+		"doe": {},
 	}
 
-	username := "john"
-	password := "secr3t"
-
-	// get data user and validate
-	if ok := userDatabase[username]; len(ok) == 0 {
-		log.Fatal(`User or password is wrong`)
+	userLogin := []string{
+		"john", "doe",
 	}
 
-	// validate password
-	pass := userDatabase[username]
-	if password != pass {
-		log.Fatal(`User or password is wrong`)
+	for i, usr := range userLogin {
+		dataUser := userDatabase[usr]
+		if dataUser.LoyaltyPoint < 1 {
+			fmt.Println(`[log] Failed to get data loyalty from user...`)
+			// continue process only print username
+			fmt.Println(fmt.Sprintf("%d. Username: %s", i+1, usr))
+			continue
+		}
+
+		fmt.Println(fmt.Sprintf("%d. Username: %s have loyalty point: %d", i+1, usr, dataUser.LoyaltyPoint))
 	}
 
 	// login is success
-	fmt.Println(`Successfully login to system`)
+	fmt.Println(`[log] Successfully get all of data users`)
 }
